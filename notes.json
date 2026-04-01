@@ -1,0 +1,30 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+from app.orchestrator import handle_request
+from app.storage import get_workflows, get_events, get_tasks, get_notes
+
+app = FastAPI()
+
+class ChatRequest(BaseModel):
+    user_id: str
+    message: str
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+    return handle_request(request.user_id, request.message)
+
+@app.get("/workflows")
+def workflows():
+    return get_workflows()
+
+@app.get("/events")
+def events():
+    return get_events()
+
+@app.get("/tasks")
+def tasks():
+    return get_tasks()
+
+@app.get("/notes")
+def notes():
+    return get_notes()

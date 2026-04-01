@@ -1,0 +1,14 @@
+[
+  {
+    "event_id": "evt_001",
+    "title": "Scheduled Meeting",
+    "scheduled_for": "tomorrow at 3 PM",
+    "created_for_user": "user_001"
+  },
+  {
+    "event_id": "evt_001",
+    "title": "Scheduled Meeting",
+    "scheduled_for": "tomorrow at 3 PM",
+    "created_for_user": "user_001"
+  }
+]

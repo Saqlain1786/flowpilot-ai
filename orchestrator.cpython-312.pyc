@@ -1,0 +1,63 @@
+import json
+import os
+
+WORKFLOWS_FILE = "data/workflows.json"
+EVENTS_FILE = "data/events.json"
+TASKS_FILE = "data/tasks.json"
+NOTES_FILE = "data/notes.json"
+
+
+def _read_json_file(file_path: str):
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
+    return []
+
+
+def _write_json_file(file_path: str, data):
+    os.makedirs("data", exist_ok=True)
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=2)
+
+
+def save_workflow(workflow_data: dict):
+    workflows = _read_json_file(WORKFLOWS_FILE)
+    workflows.append(workflow_data)
+    _write_json_file(WORKFLOWS_FILE, workflows)
+
+
+def get_workflows():
+    return _read_json_file(WORKFLOWS_FILE)
+
+
+def save_event(event_data: dict):
+    events = _read_json_file(EVENTS_FILE)
+    events.append(event_data)
+    _write_json_file(EVENTS_FILE, events)
+
+
+def get_events():
+    return _read_json_file(EVENTS_FILE)
+
+
+def save_task(task_data: dict):
+    tasks = _read_json_file(TASKS_FILE)
+    tasks.append(task_data)
+    _write_json_file(TASKS_FILE, tasks)
+
+
+def get_tasks():
+    return _read_json_file(TASKS_FILE)
+
+
+def save_note(note_data: dict):
+    notes = _read_json_file(NOTES_FILE)
+    notes.append(note_data)
+    _write_json_file(NOTES_FILE, notes)
+
+
+def get_notes():
+    return _read_json_file(NOTES_FILE)

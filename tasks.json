@@ -1,0 +1,19 @@
+from app.storage import save_task
+
+def create_task(user_id: str, message: str):
+    task_data = {
+        "task_id": "task_001",
+        "title": "Prepare for meeting",
+        "priority": "high",
+        "created_for_user": user_id
+    }
+
+    save_task(task_data)
+
+    return {
+        "agent": "task_agent",
+        "action": "create_task",
+        "status": "success",
+        "task": task_data,
+        "source_message": message
+    }
