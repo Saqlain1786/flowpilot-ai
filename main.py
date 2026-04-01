@@ -1,19 +1,50 @@
-from app.storage import save_event
+from fastapi import FastAPI
+from pydantic import BaseModel
+from app.orchestrator import handle_request
+from app.storage import get_workflows, get_events, get_tasks, get_notes
 
-def create_event(user_id: str, message: str):
-    event_data = {
-        "event_id": "evt_001",
-        "title": "Scheduled Meeting",
-        "scheduled_for": "tomorrow at 3 PM",
-        "created_for_user": user_id
-    }
+app = FastAPI()
 
-    save_event(event_data)
 
+# Request model
+class ChatRequest(BaseModel):
+    user_id: str
+    message: str
+
+
+# Root endpoint (VERY important for Cloud Run)
+@app.get("/")
+def home():
     return {
-        "agent": "calendar_agent",
-        "action": "create_event",
-        "status": "success",
-        "event": event_data,
-        "source_message": message
+        "app": "FlowPilot AI",
+        "status": "running",
+        "message": "Multi-Agent Productivity Assistant is live"
     }
+
+
+# Main chat endpoint
+@app.post("/chat")
+def chat(request: ChatRequest):
+    result = handle_request(request.user_id, request.message)
+    return result
+
+
+# (Optional but already supported in your backend)
+@app.get("/workflows")
+def fetch_workflows():
+    return get_workflows()
+
+
+@app.get("/events")
+def fetch_events():
+    return get_events()
+
+
+@app.get("/tasks")
+def fetch_tasks():
+    return get_tasks()
+
+
+@app.get("/notes")
+def fetch_notes():
+    return get_notes()
